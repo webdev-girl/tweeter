@@ -34,7 +34,7 @@ return [
     */
 
     'connections' => [
-        'sakac-chat-heroku' => [
+        'tweeter-heroku' => [
             'driver'   => 'pgsql',
             'host'     => $heroku_db_url['host'],
             'database' => substr($heroku_db_url['path'], 1),
