@@ -1,4 +1,5 @@
 <?php
+
 $heroku_db_url = parse_url(env('DATABASE_URL', "postgres://forge:forge@localhost:5432/forge"));
 use Illuminate\Support\Str;
 
@@ -55,7 +56,7 @@ return [
         'mysql' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
-            'host' => env('DB_HOST', '127.0.0.1'),
+            'host' => env('DB_HOST', 'localhost'),
             'port' => env('DB_PORT', '33060'),
             'database' => env('DB_DATABASE', 'tweeter'),
             'username' => env('DB_USERNAME', 'homestead'),

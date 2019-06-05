@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
