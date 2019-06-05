@@ -1845,11 +1845,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {
-    console.log('Component mounted.');
-  },
-  props: ['comments']
+  mounted: function mounted() {},
+  props: ['tweetId']
 });
 
 /***/ }),
@@ -1879,10 +1880,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {},
   data: function data() {
     return {
+      newComment: "",
       apiKey: 'IY8gHfjUnnCD9ONKb93c9ev0K0gPyJTk',
       limit: 4,
       search: '',
@@ -1892,30 +1902,24 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    // makeComment(){
-    //     axios.get('/api/new-comment', {
-    //         tweet_id: this.tweetId,
-    //         user_id: currentlyLoggedInUserInUserId,
-    //         comment: this.newComment
-    //     })
-    //     .then(function(response) {
-    //     })
-    //     .catch(function(error) {
-    //     });
-    //     console.log(tweetId)
-    // },
+    makeComment: function makeComment() {
+      axios.post("/api/new-comment", {
+        tweet_id: this.tweetId,
+        user_id: currentlyLoggedInUserInUserId,
+        comment: this.newComment
+      }).then(function (response) {})["catch"](function (error) {});
+      console.log(tweetId);
+    },
     getGif: function getGif() {
-      var _this = this;
-
-      alert(); // return axios("https://api.giphy.com/v1/gifs/search?q=" + this.search + "&api_key=doN7pilpkc58wRLVJiriZQkes6IAYz4k&q=hello&limit=20&offset=0&rating=G&lang=en", {
-      // method: 'GET',
-      // mode: 'no-cors',
-      // headers: {
-      // 'Access-Control-Allow-Origin': '*',
-      // 'Content-Type': 'application/json',
-      //     },
-      // })
-      // axios.get("https://api.giphy.com/v1/gifs/search?q=" + this.search + "api_key=doN7pilpkc58wRLVJiriZQkes6IAYz4k&q=hello&limit=20&offset=0&rating=G&lang=en")
+      alert();
+      return axios("https://api.giphy.com/v1/gifs/search?q=" + this.search + "&api_key=doN7pilpkc58wRLVJiriZQkes6IAYz4k&q=hello&limit=20&offset=0&rating=G&lang=en", {
+        method: 'GET',
+        mode: 'no-cors',
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json'
+        }
+      }); // axios.get("https://api.giphy.com/v1/gifs/search?q=" + this.search + "api_key=doN7pilpkc58wRLVJiriZQkes6IAYz4k&q=hello&limit=20&offset=0&rating=G&lang=en")
       // .then((response) => {
       //     console.log(response);
       //     this.gif.splice(0,this.gif.length);
@@ -1924,14 +1928,19 @@ __webpack_require__.r(__webpack_exports__);
       //         //this.gif.push( element.images.fixed_height.url);
       //     });
       // });
-
-      axios.get('https://api.giphy.com/v1/gifs/search?q=' + this.search + '&api_key=' + this.apiKey + '&limit=' + this.limit).then(function (response) {
-        console.log(response.data.data[0].images.fixed_height.url);
-        _this.gif = response.data[0];
-        _this.gifSrc = response.data.data[0].images.fixed_height.url;
-      })["catch"](function (error) {
-        console.log(error);
-      });
+      // axios.get('https://api.giphy.com/v1/gifs/search?q=' + this.search + '&api_key=' + this.apiKey + '&limit=' + this.limit)
+      //     .then((response) => {
+      //
+      //         console.log(response.data.data[0].images.fixed_height.url)
+      //
+      //         this.gif = response.data[0];
+      //
+      //         this.gifSrc = response.data.data[0].images.fixed_height.url;
+      //
+      //     })
+      //     .catch(function(error){
+      //         console.log(error);
+      //     })
     }
   },
   props: ['tweetId']
@@ -1960,11 +1969,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     this.initialComments();
-    console.log('Comments Component mounted.');
+    console.log('Component mounted.');
   },
   data: function data() {
     return {
@@ -1975,12 +1983,12 @@ __webpack_require__.r(__webpack_exports__);
     initialComments: function initialComments() {
       var _this = this;
 
-      axios.get("/api/tweet-comments/" + this.tweetId).then(function (response) {
+      axios.get('/api/tweet-comments/' + this.tweetId).then(function (response) {
         _this.comments = response.data.data;
       });
     }
   },
-  props: ['tweetId']
+  props: ['comment']
 });
 
 /***/ }),
@@ -2013,6 +2021,38 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('Component mounted.');
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GiphComment.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/GiphComment.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: ['comment'],
+  computed: {
+    avatar: function avatar() {
+      return 'https://api.adorable.io/avatars/48/' + this.comment.name.toString().toLowerCase().trim().replace(/[\s\W-]+/g, '-') + '@adorable.io.png';
+    }
   }
 });
 
@@ -2056,10 +2096,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      tweets: [],
+      newComment: '',
       likeActive: true,
-      unlikeActive: false,
-      newComment: "",
-      comment: []
+      unlikeActive: false
     };
   },
   methods: {
@@ -2072,6 +2112,18 @@ __webpack_require__.r(__webpack_exports__);
         comment: this.newComment
       }) // alert(this.newComment);
       .then(function (response) {// console.log(response);
+      })["catch"](function (error) {// console.log(error);
+      });
+      location.reload();
+    },
+    deleteTweet: function deleteTweet() {
+      alert('Are you sure you want to perform this action?');
+      console.log(this.deleteTweet);
+      axios.post('/api/tweet-delete', {
+        tweet_id: this.tweet.id,
+        user_id: currentlyLoggedInUserInUserId,
+        comment: this.newComment
+      }).then(function (response) {// console.log(response);
       })["catch"](function (error) {// console.log(error);
       });
       location.reload();
@@ -2117,6 +2169,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -37448,17 +37501,17 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", {}, [
-    _vm._v("\n    " + _vm._s(_vm.comment.comment) + " "),
-    _c("br"),
-    _vm._v(
-      "\n        " +
-        _vm._s(_vm.comment.user_id) +
-        " @ " +
-        _vm._s(_vm.comment.created_at) +
-        "\n "
-    )
-  ])
+  return _c(
+    "div",
+    [
+      _c("div", { staticClass: "comment-contentborder" }, [
+        _vm._v("\n        " + _vm._s(_vm.comment.comment) + "\n    ")
+      ]),
+      _vm._v(" "),
+      _c("commenting-component", { attrs: { tweetId: _vm.tweetId } })
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -37483,16 +37536,60 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "container fluid" }, [
-      _c("div", { staticClass: "layout row wrap justify-center" }, [
-        _c("div", { staticClass: "card pa-2" }, [
-          _c("div", {
-            staticClass: "card-media",
-            attrs: { src: _vm.gifSrc, height: "200px" }
-          })
+    _c(
+      "form",
+      { attrs: { name: "comments-form", method: "post", action: "tweets" } },
+      [
+        _c("textarea", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.newComment,
+              expression: "newComment"
+            }
+          ],
+          staticClass: "form-control",
+          attrs: { name: "comment", placeholder: "Comment Here" },
+          domProps: { value: _vm.newComment },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.newComment = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("input", {
+          attrs: {
+            type: "hidden",
+            name: "user_id",
+            value: "currentlyLoggedInUserInUserId"
+          }
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "align-right" }, [
+          _c(
+            "button",
+            { staticClass: "btn btn-success", on: { click: _vm.makeComment } },
+            [_vm._v("Comment")]
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "container fluid" }, [
+          _c("div", { staticClass: "layout row wrap justify-center" }, [
+            _c("div", { staticClass: "card pa-2" }, [
+              _c("div", {
+                staticClass: "card-media",
+                attrs: { src: _vm.gifSrc, height: "200px" }
+              })
+            ])
+          ])
         ])
-      ])
-    ])
+      ]
+    )
   ])
 }
 var staticRenderFns = []
@@ -37531,10 +37628,9 @@ var render = function() {
     },
     [
       _c(
-        "div",
-        { staticClass: "comment-component" },
+        "ul",
         _vm._l(_vm.comments, function(comment) {
-          return _c("comment-component", { attrs: { comments: comment } })
+          return _c("comment", { attrs: { comment: _vm.comments } })
         }),
         1
       )
@@ -37595,6 +37691,47 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GiphComment.vue?vue&type=template&id=1023c30a&":
+/*!**************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/GiphComment.vue?vue&type=template&id=1023c30a& ***!
+  \**************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("li", { attrs: { transition: "slide" } }, [
+    _c("div", { staticClass: "profile" }, [
+      _c("img", { attrs: { src: _vm.avatar, alt: "" } })
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "msg" }, [
+      _c("div", { staticClass: "msg-body" }, [
+        _c("p", { staticClass: "name" }, [
+          _vm._v(_vm._s(_vm.comment.name) + " "),
+          _c("span", { staticClass: "date" }, [
+            _vm._v(_vm._s(_vm.comment.time))
+          ])
+        ]),
+        _vm._v(" "),
+        _c("p", { domProps: { innerHTML: _vm._s(_vm.comment.message) } })
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/TweetComponent.vue?vue&type=template&id=17a36ab7&":
 /*!*****************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/TweetComponent.vue?vue&type=template&id=17a36ab7& ***!
@@ -37610,99 +37747,95 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    { staticClass: "tweet" },
-    [
-      _vm._v("\n    " + _vm._s(_vm.tweet.tweet) + "\n    "),
-      _c("br"),
-      _vm._v(
-        "\n    by -" +
-          _vm._s(_vm.tweet.id) +
-          " @ " +
-          _vm._s(_vm.tweet.created_at) +
-          "\n    "
-      ),
-      _c("br"),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-sm likeUnlikeBtn",
-          class: { displaying: _vm.likeActive },
-          staticStyle: { "background-color": "#1da1f2", color: "white" },
-          on: {
-            click: function($event) {
-              return _vm.likeTweet(_vm.tweet.id)
-            }
-          }
-        },
-        [
-          _c("i", {
-            staticClass: "fa fa-heart",
-            staticStyle: { color: "#2DB2F4" }
-          }),
-          _vm._v("Like")
-        ]
-      ),
-      _vm._v("   \n    "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-sm likeUnlikeBtn",
-          class: { displaying: _vm.unlikeActive },
-          staticStyle: { "background-color": "#1da1f2", color: "white" },
-          on: {
-            click: function($event) {
-              return _vm.unlikeTweet(_vm.tweet.id)
-            }
-          }
-        },
-        [_c("i", { staticClass: "fa fa-heart" }), _vm._v("unlike")]
-      ),
-      _vm._v(" "),
-      _c("textarea", {
-        directives: [
-          {
-            name: "model",
-            rawName: "v-model",
-            value: _vm.newComment,
-            expression: "newComment"
-          }
-        ],
-        staticClass: "form-control",
-        attrs: { name: "comment", placeholder: "Comment Here" },
-        domProps: { value: _vm.newComment },
+  return _c("div", { staticClass: "tweet" }, [
+    _vm._v("\n    " + _vm._s(_vm.tweet.tweet) + "\n    "),
+    _c("br"),
+    _vm._v(
+      "\n    by -" +
+        _vm._s(_vm.tweet.user_id) +
+        " @ " +
+        _vm._s(_vm.tweet.created_at) +
+        "\n    "
+    ),
+    _c("br"),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-sm likeUnlikeBtn",
+        class: { displaying: _vm.likeActive },
+        staticStyle: { "background-color": "#1da1f2", color: "white" },
         on: {
-          input: function($event) {
-            if ($event.target.composing) {
-              return
-            }
-            _vm.newComment = $event.target.value
+          click: function($event) {
+            return _vm.likeTweet(_vm.tweet.id)
           }
         }
-      }),
-      _vm._v(" "),
-      _c("input", {
-        attrs: { type: "hidden", name: "tweet_id", value: "tweet_id" }
-      }),
-      _vm._v(" "),
-      _c("div", { staticClass: "align-right" }, [
-        _c(
-          "button",
-          { staticClass: "btn btn-success", on: { click: _vm.makeComment } },
-          [_vm._v("Comment")]
-        )
-      ]),
-      _vm._v(" "),
-      _c("comments-component", { attrs: { tweetId: _vm.tweet.id } }),
-      _vm._v(" "),
-      _c("br"),
-      _vm._v(" "),
-      _c("commenting-component", { attrs: { tweetId: _vm.tweet.id } })
-    ],
-    1
-  )
+      },
+      [_vm._v("Like")]
+    ),
+    _vm._v("   \n    "),
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-sm likeUnlikeBtn",
+        class: { displaying: _vm.unlikeActive },
+        staticStyle: { "background-color": "#1da1f2", color: "white" },
+        on: {
+          click: function($event) {
+            return _vm.unlikeTweet(_vm.tweet.id)
+          }
+        }
+      },
+      [_vm._v("Unlike")]
+    ),
+    _vm._v(" "),
+    _c("input", {
+      attrs: { type: "hidden", name: "_method", value: "DELETE" }
+    }),
+    _vm._v(" "),
+    _c("input", { attrs: { type: "hidden", name: "tweet_id", value: "" } }),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-default like btn-delete",
+        staticStyle: { "background-color": "#1da1f2", color: "white" },
+        attrs: { type: "submit", "ng-click": "like()" },
+        on: { click: _vm.deleteTweet }
+      },
+      [_vm._v("Delete")]
+    ),
+    _vm._v(" "),
+    _c("textarea", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.newComment,
+          expression: "newComment"
+        }
+      ],
+      staticClass: "form-control",
+      attrs: { name: "comment", placeholder: "Comment Here" },
+      domProps: { value: _vm.newComment },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.newComment = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("input", { attrs: { type: "hidden", name: "tweet_id" } }),
+    _vm._v(" "),
+    _c(
+      "button",
+      { staticClass: "btn btn-success", on: { click: _vm.makeComment } },
+      [_vm._v("Comment")]
+    )
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -37722,36 +37855,8 @@ render._withStripped = true
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("input", {
-      attrs: { type: "file", name: "image", accept: "image/*" },
-      on: { change: _vm.GetImage }
-    }),
-    _vm._v(" "),
-    _c("img", { attrs: { src: _vm.avatar, alt: "Image" } }),
-    _vm._v(" "),
-    _c(
-      "a",
-      {
-        staticClass: "btn btn-success",
-        attrs: { href: "#" },
-        on: {
-          click: function($event) {
-            $event.preventDefault()
-            return _vm.upload($event)
-          }
-        }
-      },
-      [_vm._v("Upload")]
-    )
-  ])
-}
+var render = function () {}
 var staticRenderFns = []
-render._withStripped = true
 
 
 
@@ -49924,6 +50029,7 @@ Vue.component('comments-component', __webpack_require__(/*! ./components/Comment
 Vue.component('comment-component', __webpack_require__(/*! ./components/CommentComponent.vue */ "./resources/js/components/CommentComponent.vue")["default"]);
 Vue.component('commenting-component', __webpack_require__(/*! ./components/CommentingComponent.vue */ "./resources/js/components/CommentingComponent.vue")["default"]);
 Vue.component('upload-component', __webpack_require__(/*! ./components/UploadComponent.vue */ "./resources/js/components/UploadComponent.vue")["default"]);
+Vue.component('giph-comment', __webpack_require__(/*! ./components/GiphComment.vue */ "./resources/js/components/GiphComment.vue")["default"]);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -49944,7 +50050,8 @@ var test = new Vue({
     return {
       tweets: [],
       lastTweetId: 0,
-      lastCallTime: 0
+      lastCallTime: 0,
+      comments: []
     };
   },
   methods: {
@@ -49956,24 +50063,33 @@ var test = new Vue({
         _this.lastTweetId = response.data.data[response.data.data.length - 1]["id"]; // console.log("this.lastTweetId");
       });
     },
-    scroll: function scroll() {
+    initialComments: function initialComments() {
       var _this2 = this;
+
+      axios.get("/api/comments/5").then(function (response) {
+        _this2.comments = response.data.data;
+        _this2.lastTweetId = response.data.data[response.data.data.length - 1]["id"];
+        console.log(response.data.data);
+      });
+    },
+    scroll: function scroll() {
+      var _this3 = this;
 
       window.onscroll = function () {
         if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 0.5) {
-          if (new Date().getTime() > _this2.lastCallTime + 500) {
-            axios.get("/api/tweetsbynumberfromstartpoint/5/" + _this2.lastTweetId).then(function (response) {
+          if (new Date().getTime() > _this3.lastCallTime + 500) {
+            axios.get("/api/tweetsbynumberfromstartpoint/5/" + _this3.lastTweetId).then(function (response) {
               var data = response.data.data;
               console.log(response);
 
               for (var i = 0; i < data.length; i++) {
-                _this2.tweets.push(data[i]);
+                _this3.tweets.push(data[i]);
 
-                _this2.lastTweetId = data[i]["id"];
-                console.log(_this2.lastTweetId);
+                _this3.lastTweetId = data[i]["id"];
+                console.log(_this3.lastTweetId);
               }
             });
-            _this2.lastCallTime = new Date().getTime();
+            _this3.lastCallTime = new Date().getTime();
           }
         }
       };
@@ -49981,6 +50097,7 @@ var test = new Vue({
   },
   mounted: function mounted() {
     this.initialTweets();
+    this.initialComments();
     this.scroll();
   }
 });
@@ -50316,6 +50433,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExampleComponent_vue_vue_type_template_id_299e239e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/GiphComment.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/components/GiphComment.vue ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _GiphComment_vue_vue_type_template_id_1023c30a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./GiphComment.vue?vue&type=template&id=1023c30a& */ "./resources/js/components/GiphComment.vue?vue&type=template&id=1023c30a&");
+/* harmony import */ var _GiphComment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./GiphComment.vue?vue&type=script&lang=js& */ "./resources/js/components/GiphComment.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _GiphComment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _GiphComment_vue_vue_type_template_id_1023c30a___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _GiphComment_vue_vue_type_template_id_1023c30a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/GiphComment.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/GiphComment.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/components/GiphComment.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GiphComment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./GiphComment.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GiphComment.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_GiphComment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/GiphComment.vue?vue&type=template&id=1023c30a&":
+/*!********************************************************************************!*\
+  !*** ./resources/js/components/GiphComment.vue?vue&type=template&id=1023c30a& ***!
+  \********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GiphComment_vue_vue_type_template_id_1023c30a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./GiphComment.vue?vue&type=template&id=1023c30a& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/GiphComment.vue?vue&type=template&id=1023c30a&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GiphComment_vue_vue_type_template_id_1023c30a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_GiphComment_vue_vue_type_template_id_1023c30a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

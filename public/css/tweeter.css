@@ -480,6 +480,8 @@ a:hover {
 .close:hover {
   background: #00d9ff; }
 
+/* ////////home///////// */
+
 .home-bg {
   font-family: 'Roboto', Arial, Helvetica, Sans-serif, Verdana;
   background: #dee1e3;
@@ -487,23 +489,6 @@ a:hover {
   margin: 0;
   width: 100%;
   height: 100%; }
-
-.timeline-div {
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  padding-left: 0px; }
-
-.timeline-nav {
-  border: 1px solid;
-  width: 100%;
-  margin: 0;
-  padding: 0; }
-  .timeline-nav ul {
-    width: 100%;
-    margin: 0; }
-    .timeline-nav ul li {
-      margin: 0; }
 
 .search-input{
     border-radius:20%;

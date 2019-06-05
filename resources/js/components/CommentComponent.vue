@@ -1,15 +1,17 @@
 <template>
-    <div class="">
-        {{comment.comment}} <br />
-            {{ comment.user_id }} @ {{ comment.created_at }}
-     </div>
+    <div>
+        <div class="comment-contentborder">
+            {{ comment.comment }}
+        </div>
+        <commenting-component  :tweetId="tweetId"></commenting-component>
+    </div>
+
 </template>
 
 <script>
     export default {
         mounted() {
-            console.log('Component mounted.')
         },
-        props:['comments']
+        props: ['tweetId']
     }
 </script>

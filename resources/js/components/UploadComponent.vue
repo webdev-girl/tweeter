@@ -4,6 +4,7 @@
         <img :src="avatar" alt="Image">
         <a href="#" class="btn btn-success" @click.prevent="upload">Upload</a>
     </div>
+    <upload-component :user="{{auth()->user()}}"></upload-component>
 </template>
 
 <script>

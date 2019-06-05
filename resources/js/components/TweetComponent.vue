@@ -2,23 +2,23 @@
     <div class="tweet">
         {{ tweet.tweet }}
         <br />
-        by -{{tweet.id}} @ {{ tweet.created_at }}
+        by -{{tweet.user_id}} @ {{ tweet.created_at }}
         <br/>
-        <button :class="{'displaying': likeActive}" class="btn btn-sm likeUnlikeBtn" @click="likeTweet(tweet.id)" style="background-color:#1da1f2; color:white;"><i class="fa fa-heart" style="color:#2DB2F4;"></i>Like</button> &nbsp;&nbsp;
-        <button :class="{'displaying': unlikeActive}" class="btn btn-sm likeUnlikeBtn" @click="unlikeTweet(tweet.id)" style="background-color: #1da1f2; color:white;"><i class="fa fa-heart"></i>unlike</button>
+        <button :class="{'displaying': likeActive}" class="btn btn-sm likeUnlikeBtn" @click="likeTweet(tweet.id)" style="background-color: #1da1f2; color:white;"></i>Like</button> &nbsp;&nbsp;
+        <button :class="{'displaying': unlikeActive}" class="btn btn-sm likeUnlikeBtn" @click="unlikeTweet(tweet.id)" style="background-color: #1da1f2; color:white;"></i>Unlike</button>
+        <input type="hidden" name="_method" value="DELETE"/>
+        <input type="hidden" name="tweet_id" value=""/>
+        <button @click="deleteTweet" type="submit" class="btn btn-default like btn-delete" ng-click="like()" style="background-color: #1da1f2; color:white;">Delete</button>
+
 
         <textarea v-model="newComment" class="form-control" name="comment" placeholder="Comment Here"></textarea>
+        <input type="hidden" name="tweet_id"/>
+        <button @click="makeComment" class="btn btn-success">Comment</button>
 
-        <input type="hidden" name="tweet_id" value="tweet_id"/>
 
-        <div class="align-right">
-            <button @click="makeComment" class="btn btn-success">Comment</button>
-        </div>
-        <comments-component :tweetId="tweet.id"></comments-component>
-        <br />
-        <commenting-component :tweetId="tweet.id"></commenting-component>
 
     </div>
+
 </template>
 
 <script>
@@ -27,12 +27,14 @@ export default {
         console.log('Tweet Component mounted.')
     },
     data() {
+
         return{
+            tweets: [],
+            newComment:'',
+
             likeActive: true,
-            unlikeActive: false,
-            newComment: "",
-            comment: []
-      }
+            unlikeActive: false
+        }
     },
     methods:{
         makeComment(){
@@ -54,6 +56,23 @@ export default {
         });
       location.reload();
     },
+        deleteTweet(){
+            alert('Are you sure you want to perform this action?');
+            console.log(this.deleteTweet);
+            axios.post('/api/tweet-delete',{
+                tweet_id: this.tweet.id,
+                user_id: currentlyLoggedInUserInUserId,
+                comment: this.newComment
+        })
+
+        .then(function (response) {
+            // console.log(response);
+        })
+        .catch(function (error){
+            // console.log(error);
+        });
+  location.reload();
+},
         likeTweet(tweetId){
             this.likeActive  = false;
             this.unlikeActive  = true;

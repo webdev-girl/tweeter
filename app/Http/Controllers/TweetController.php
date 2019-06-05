@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\User;
 use App\Tweets;
 use App\TweetLike;
@@ -14,6 +15,7 @@ use App\Http\Resources\User as UserResource;
 use App\Http\Resources\Tweet as TweetResource;
 use App\Http\Resources\TweetLike as TweetLikeResource;
 use App\Http\Resources\Comment as CommentResource;
+use App\Http\Resources\Comments as CommentsResource;
 class TweetController extends Controller
 {
 
@@ -242,17 +244,7 @@ class TweetController extends Controller
     //             return '{"success": "0"}';
     //         }
     //     }
-    //     // public function getTweetComments($tweetId){
-    //     //     // $user = User::find($id);
-    //     //     $user = Auth::user();
-    //     //     $comment = new Comments;
-    //     //     $comment ->user_id = $request->user_id;
-    //     //     $comment ->tweet_id = $request->tweet_id;
-    //     //     $comment ->comment = $request->comment;
-    //     //     $comment ->save();
-    //     //     $comment = Comments::where("tweet_id","=",$tweetId)->get();
-    //     //     return new CommentResource($comment);
-    //     // }
+
     //     public function getTweetComments($tweetId){
     //     $comments = Comments:: where('tweet_id', '=', $tweetId)->get();
     //     return new CommentResource($comments);
@@ -314,7 +306,7 @@ class TweetController extends Controller
      $user = Auth::user();
      $tweet = new Tweets;
      $tweet ->user_id = $user->id;
-     $tweet ->tweets = $request->tweet;
+     $tweet ->tweet = $request->tweet;
      $tweet -> save();
      return redirect('home');
  }
@@ -357,7 +349,7 @@ class TweetController extends Controller
      return redirect('home');
  }
  public function editCommentDisplay($id){
-     $comment =Comments::find($id);
+     $comment = Comments::find($id);
      return view('editComment',compact('comment'));
  }
  public function likeTweet(Request $request){
@@ -393,10 +385,7 @@ class TweetController extends Controller
      $tweets =  Tweets::get();
      return new TweetResource($tweets);
  }
- public function getAllComments(){
-     $comments =  Comments::get();
-     return new CommentResource($comments);
- }
+
  public function getAllTweetLikes(){
      $tweetLikes =  Tweetlike::get();
      return new TweetlikeResource($tweetLikes);
@@ -409,69 +398,88 @@ class TweetController extends Controller
      $tweets =  Tweets::limit($number)->where("id", "<", $id)->orderBy('id','DESC')->get();
      return new TweetResource($tweets);
  }
- public function likeTweetViaApi(Request $request){
-     $user = Auth::user();
-     $user = new User();
-     $tweetLike = new Tweetlike;
-     $tweetLike ->user_id = $request->user_id;
-     $tweetLike ->tweet_id = $request->tweet_id;
-     $tweetLike ->like = $request->like;
-     if ($tweetLike -> save()){
-         return '{"success": "1"}';
+
+    public function likeTweetViaApi(Request $request){
+         $user = Auth::user();
+         $user = new User();
+         $tweetLike = new Tweetlike;
+         $tweetLike ->user_id = $request->user_id;
+         $tweetLike ->tweet_id = $request->tweet_id;
+         $tweetLike ->like = $request->like;
+         if ($tweetLike -> save()){
+             return '{"success": "1"}';
+         }
+         else{
+             return '{"success": "0"}';
+    }
+}
+    public function deleteTweetViaApi(Request $request){
+       $tweet = Tweets::find($request->tweet_id);
+       if($tweet){
+       Tweets::destroy($request->tweet_id);
+        }
+        return  redirect('home');
      }
-     else{
-         return '{"success": "0"}';
+     //     public function deleteTweet(Request $request) {
+     //         $tweet = Tweets::find($request->tweet_id);
+     //         if($tweet){
+     //         Tweet::destroy($request->tweet_id);
+     //         }
+     //         return redirect('home');
+     //            return back()
+     //                ->with('success','Successfully deleted!!.');
+     //     }
+    // public function deleteViaApi($id){
+    //     $user = Auth::user();
+    //     Comments::where('id',$id)->delete();
+    //     return redirect('home');
+    // }
+
+     public function followUserViaApi(){
+         $user = Auth::user();
+         $user = new User();
+         $follower= new FollowerResource;
+         $follower ->user_id = $request->user_id;
+         $follower ->follower_id = $request->follower_id;
+         $follower ->following = $request->following;
+         if ($follower -> save()){
+             return '{"success": "1"}';
+         }
+         else{
+             return '{"success": "0"}';
+         }
      }
- }
- public function followUserViaApi(){
-     $user = Auth::user();
-     $user = new User();
-     $follower= new FollowerResource;
-     $follower ->user_id = $request->user_id;
-     $follower ->follower_id = $request->follower_id;
-     $follower ->following = $request->following;
-     if ($follower -> save()){
-         return '{"success": "1"}';
-     }
-     else{
-         return '{"success": "0"}';
-     }
- }
+ // public function getTweetComments(Request $request){
+ //
+ //     $user = Auth::user();
+ //     $comment = new Comments;
+ //     $comment ->user_id = $request->user_id;
+ //     $comment ->tweet_id = $request->tweet_id;
+ //     $comment ->comment = $request->comment;
+ //     $comment = Comments::where("tweet_id")->get();
+ //     return new CommentResource($comment);
+ // }
  public function getTweetComments($tweetId){
+     $comment = new Comments;
      $comments = Comments::where("tweet_id","=",$tweetId)->get();
      return new CommentResource($comments);
  }
- public function newCommentViaApi(Request $request){
-     $user = Auth::user();
-     $comment = new Comments;
-     $comment ->user_id = $request->user_id;
-     $comment ->tweet_id = $request->tweet_id;
-     $comment ->comment = $request->comment;
-     if($request->comment){
-         $comment -> save();
-         return '{"success": "1"}';
+    public function newCommentViaApi(Request $request){
+         $comment = new Comments;
+         $comment ->user_id = $request->user_id;
+         $comment ->tweet_id = $request->tweet_id;
+         $comment ->comment = $request->comment;
+         if($request->comment){
+          $comment -> save();
+          return '{"success": "1"}';
+         }
+         else{
+          return '{"success": "0"}';
+         }
      }
-     else{
-         return '{"success": "0"}';
-        }
-    }
+
 }
 
-
-//         public function newCommentApi(request $request){
-//             $commentApi = new Comments;
-//             $commentApi->user_id = $request->user_id;
-//             $commentApi->tweet_id = $request->tweet_id;
-//             $commentApi->comment = $request->comment;
-//             if ($request->comment) {
-//                 $commentApi->save();
-//                 return '{"success" : "1"}';
-//             }else {
-//                 return '{"success" : "0"}';
-//         }
-//     }
-// }
-    //
     //     public function store(){
     //         return view('home');
     //     }
@@ -601,22 +609,8 @@ class TweetController extends Controller
     //             return '{"success" : "0"}';
     //         }
     //     }
-    //     public function getTweetComments($tweetId){
-    //         $comments = Comments:: where('tweet_id', '=', $tweetId)->get();
-    //         return new CommentResource($comments);
-    //     }
-    //     public function newCommentApi(request $request){
-    //         $commentApi = new Comments;
-    //         $commentApi->user_id = $request->user_id;
-    //         $commentApi->tweet_id = $request->tweet_id;
-    //         $commentApi->comment = $request->comment;
-    //         if ($request->comment) {
-    //             $commentApi->save();
-    //             return '{"success" : "1"}';
-    //         }else {
-    //             return '{"success" : "0"}';
-    //         }
-    //     }
+
+
     //     public function editprofile(request $request){
     //         $currentUser - Auth::user();
     //         $user = $user->find($user_Id);
@@ -627,5 +621,5 @@ class TweetController extends Controller
     //         $Edit->save();
     //         return redirect('profile');
     //     }
-    //     //last step create form
+
     // }

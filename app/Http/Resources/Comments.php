@@ -2,11 +2,9 @@
 
 namespace App\Http\Resources;
 
-use App\Comment;
-
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Tweet extends JsonResource
+class Comments extends JsonResource
 {
     /**
      * Transform the resource into an array.

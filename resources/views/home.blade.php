@@ -21,6 +21,7 @@
                         <div class="card card-default">
                             @foreach ($tweets as $tweet)
                              @endforeach
+
                                <div class="card-header header">
 
                                     <div class="profile-contact">
@@ -95,10 +96,11 @@
                                        </div>
                                    </div>
                                    <div id="tweetsWrapper">
-                                        <upload-component :user="{{auth()->user()}}"></upload-component>
                                         <tweet-component v-for="tweet in tweets" :tweet=tweet></tweet-component>
                                     </div>
+
                                    <div class="container">
+
                                         <div class="row">
                                             <div class="col-md-3 tweet-buttons">
                                                 <a href="/edit-tweet"><i class="far fa-edit"></i></a>
@@ -106,12 +108,8 @@
                                             <div class="col-md-3 tweet-buttons">
                                                 <form name="delete-form" method="post" action="delete-tweet">
                                                 @csrf
-                                                    <input type="hidden" name="_method" value="DELETE"/>
-                                                    <input type="hidden" name="tweet_id" value=""/>
-                                                    <button type="submit" class="btn btn-default like btn-delete" ng-click="like()">
-                                                        <i class="fa fa-trash"> </i>
-                                                    </button>
-                                                 </form>
+
+                                                </form>
                                                   {{-- <form name="deleteform" method="POST" action="">
                                                      @csrf
                                                      <input type="hidden" name="_method" value="destroy" />
@@ -124,16 +122,13 @@
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-sm-2">
-                                            <img class="comment-avatar" src="images/profile.png" alt="profile">
+                                            {{-- <img class="comment-avatar" src="images/profile.png" alt="profile"> --}}
                                         </div>
                                         <div class="col-md-6">
-                                              <form  method="POST" action="/comment">
+                                            <form  method="POST" action="/comment">
                                             @csrf
-                                                 {{-- <textarea name="comment" class="form-control comment-box" rows="1" placeholder="What's happening?" required></textarea> --}}
 
-                                                 {{-- <button type="button" class="btn-primary btn-s" @click="comment({{ $comment->id }})">Send</button> --}}
-                                                 {{-- <button  type="submit" class="btn btn-primary"> {{ __('Comment') }}</button> --}}
-                                             </form>
+                                            </form>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -141,26 +136,10 @@
                                             <a href="/edit-comment/"><i class="far fa-edit"></i></a>
                                         </div>
                                         <div class="col-md-3 tweet-buttons">
-                                            <form method="POST" action="/like-tweet">
-                                               @csrf
-                                                <input type="hidden" name="comment_id" value=""/>
-                                                <input type="hidden" name="id" value=""/>
-                                                <input type="hidden" name="like" value="1"/>
-                                                <button class="btn btn-default like btn-like" ng-click="Unlike()">
-                                                    <i class="fa fa-heart"></i>
-                                                </button>
-                                            </form>
+
                                         </div>
                                         <div class="col-md-3 tweet-buttons">
-                                            <form method="POST" action="/like-tweet" >
-                                            @csrf
-                                                <input type="hidden" name="comment_id" value=""/>
-                                                <input type="hidden" name="id" value=""/>
-                                                <input type="hidden" name="like" value="0"/>
-                                                <button type="submit" class="btn btn-default like btn-unlike" ng-click="like()">
-                                                    <i class="fa fa-thumbs-down"></i>
-                                                </button>
-                                            </form>
+
                                         </div>
                                         <div class="col-md-3">
                                             <form name="delete-form" method="post" action="delete/{id}">

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Comments;
+
 use Auth;
 use App\Tweets;
 use App\TweetLike;
+use App\Comments;
 use App\User;
 use App\Follower;
 use Illuminate\Http\Request;
@@ -16,6 +17,7 @@ class CommentController extends Controller
         $user = Auth::user();
         $comment = new Comments;
         $comment = $comment->get();
+        $comment = Comments::limit(10)->get();
         $comment = $comment->where('user_id', $user->id)->get();
         return view('home',compact('user','comment'));
   }
@@ -32,9 +34,10 @@ class CommentController extends Controller
         $comment ->user_id = $user->id;
         $comment ->tweet_id = $request->tweet_id;
         $comment ->comment = $request->comment;
-        // $comment-> save();
+        $comments = Comment::orderBy('created_at','desc')->get();
+        $comment-> save();
          return redirect('home');
-        // $comments = Comment::orderBy('created_at','desc')->get();
+
         // return view('home', compact('comments','tweet_id','user_id'));
         }
 /////// this works//
@@ -62,4 +65,5 @@ class CommentController extends Controller
          $comment = Comments::find($id);
         return view('edit-comment', compact('comment'));
     }
+
 }

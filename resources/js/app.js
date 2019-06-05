@@ -26,6 +26,7 @@ Vue.component('comments-component', require('./components/CommentsComponent.vue'
 Vue.component('comment-component', require('./components/CommentComponent.vue').default);
 Vue.component('commenting-component', require('./components/CommentingComponent.vue').default);
 Vue.component('upload-component', require('./components/UploadComponent.vue').default);
+Vue.component('giph-comment', require('./components/GiphComment.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -46,7 +47,8 @@ const test = new Vue({
         return{
             tweets: [],
             lastTweetId: 0,
-            lastCallTime: 0
+            lastCallTime: 0,
+            comments: []
         }
     },
     methods:{
@@ -59,6 +61,15 @@ const test = new Vue({
                 // console.log("this.lastTweetId");
             });
         },
+        initialComments(){
+        axios.get("/api/comments/5")
+
+        .then((response) => {
+            this.comments = response.data.data;
+            this.lastTweetId = response.data.data[((response.data.data).length -1)]["id"];
+            console.log(response.data.data);
+        });
+    },
         scroll(){
             window.onscroll = () =>{
                 if((window.innerHeight + window.scrollY) >=
@@ -85,6 +96,7 @@ const test = new Vue({
 
     mounted(){
         this.initialTweets();
+        this.initialComments();
         this.scroll();
     }
 });
