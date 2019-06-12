@@ -37,7 +37,6 @@ html.sr .load-hidden {
 
 /* extension */
 
-
 .login-bg {
   background: #e6ecf0;
   color: #14171a;
@@ -348,9 +347,11 @@ footer {
   /* border: 1px solid; */
   text-align: center;
   border-bottom: none; }
+
   footer div ul.index-footer-info {
     list-style: none;
     justify-content: center;
+    padding-right: 60px;
     width: auto;
     margin: 0;
     padding: 0; }
@@ -532,13 +533,13 @@ div.header {
 textarea {
   margin-bottom: 5px; }
 
-  .likeActive{
-      display:inline-block;
-  }
-  .unLikeActive{
-      display: none;
-  }
-.btn-like {
+  .likeUnlikeBtn {
+    display: none; }
+
+  .displaying {
+    display: inline-block; }
+
+.btn-sm {
   padding-right: 5px;
   padding-left: 5px;
   padding-right: 5px;

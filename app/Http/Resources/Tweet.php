@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Comment;
+
 
 use Illuminate\Http\Resources\Json\JsonResource;
 

@@ -17,16 +17,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/users', "UserController@getAllUsers");
-// Route::get('/tweets', 'TweetController@getSaveTweets');
-Route::get('/tweets', 'TweetController@getAllTweets');
-
-Route::get('/tweet-comments/{tweetId}', 'TweetController@getTweetComments');
-Route::post('/new-comment', 'TweetController@newCommentViaApi');
-Route::post('/tweet-likes', 'TweetController@likeTweetViaApi');
-Route::post('/tweet-unLikes', 'TweetController@unLikeTweetViaApi');
-Route::post('/tweet-delete', 'TweetController@deleteTweetViaApi');
-Route::post('/follow-user', 'TweetController@followUserViaApi');
-Route::get('/tweetsbynumber/{number}', 'TweetController@getAllTweetsByNumber');
-Route::get('/tweetsbynumberfromstartpoint/{number}/{id}', 'TweetController@getAllTweetsByNumberFromStartPoint');
-Route::get('/commentsbynumberfromstartpoint/{number}/{id}', 'TweetController@getAllCommentsByNumberFromStartPoint');
+Route::get('/users', "TweetsController@getAllUsers");
+Route::get('/tweet', 'TweetsController@getAllTweets');
+Route::get('/comment', 'TweetsController@getAllComments');
+Route::get('/tweet-comments/{tweetId}', 'TweetsController@getTweetComments');
+Route::post('/new-comment', 'TweetsController@newCommentViaApi');
+Route::get('/new-comment', 'TweetsController@newCommentViaApi');
+Route::post('/tweet-like', 'TweetsController@likeTweetViaApi');
+Route::post('/tweet-delete', 'TweetsController@deleteTweetViaApi');
+Route::post('/comment-delete', 'TweetsController@deleteCommentViaApi');
+Route::post('/follow-user', 'TweetsController@followUserViaApi');
+Route::get('/tweetsbynumber/{number}', 'TweetsController@getAllTweetsByNumber');
+Route::get('/tweetsbynumberfromstartpoint/{number}/{id}', 'TweetsController@getAllTweetsByNumberFromStartPoint');

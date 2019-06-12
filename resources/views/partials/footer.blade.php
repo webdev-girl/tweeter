@@ -18,6 +18,6 @@
             <li><a href="/settings/personalization" rel="noopener">Settings</a></li>
             <li><a href="/marketing">Marketing</a></li>
         </ul>
-        <div class="index-footer"> © 2019 Twitter</div>
-    </div>
+    <div class="index-footer"> © 2019 Twitter</div>
+
 </footer>

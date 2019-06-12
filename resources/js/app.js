@@ -25,8 +25,9 @@ Vue.component('tweet-component', require('./components/TweetComponent.vue').defa
 Vue.component('comments-component', require('./components/CommentsComponent.vue').default);
 Vue.component('comment-component', require('./components/CommentComponent.vue').default);
 Vue.component('commenting-component', require('./components/CommentingComponent.vue').default);
-Vue.component('upload-component', require('./components/UploadComponent.vue').default);
-Vue.component('giph-comment', require('./components/GiphComment.vue').default);
+// Vue.component('comment-form', require('./components/CommentForm.vue').default);
+// Vue.component('upload-component', require('./components/UploadComponent.vue').default);
+// Vue.component('giph-comment', require('./components/GiphComment.vue').default);
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -36,67 +37,57 @@ Vue.component('giph-comment', require('./components/GiphComment.vue').default);
 // const app = new Vue({
 //     el: '#app',
 // });
-$(document).ready(function(){
-  $('form input').change(function () {
-    $('form p').text(this.files.length + " file(s) selected");
-  });
-});
-const test = new Vue({
+// $(document).ready(function(){
+//   $('form input').change(function () {
+//     $('form p').text(this.files.length + " file(s) selected");
+//   });
+// });
+const app = new Vue({
     el: '#tweetsWrapper',
+
     data(){
         return{
             tweets: [],
             lastTweetId: 0,
-            lastCallTime: 0,
-            comments: []
+            lastTimeChecked: 0
         }
     },
-    methods:{
-        initialTweets(){
-
+        methods:{
+            initialTweets(){
             axios.get("/api/tweetsbynumber/5")
             .then((response) => {
-                this.tweets = response.data.data;
-                this.lastTweetId = response.data.data[ ((response.data.data).length - 1)]["id"];
-                // console.log("this.lastTweetId");
-            });
-        },
-        initialComments(){
-        axios.get("/api/comments/5")
-
-        .then((response) => {
-            this.comments = response.data.data;
+            this.tweets = response.data.data;
             this.lastTweetId = response.data.data[((response.data.data).length -1)]["id"];
-            console.log(response.data.data);
+            // console.log(response.data.data);
         });
     },
+
         scroll(){
-            window.onscroll = () =>{
-                if((window.innerHeight + window.scrollY) >=
-                (document.body.offsetHeight -0.5)){
-                    if((new Date).getTime() > (this.lastCallTime + 500)){
+            window.onscroll = () => {
+                if ((window.innerHeight + window.srcollY) >=
+            (document.body.offsetHeight - 2)){
+                var startPoint = this.lastTweetId;
 
-                        axios.get("/api/tweetsbynumberfromstartpoint/5/" + this.lastTweetId)
-                        .then( (response) => {
-                            var data = response.data.data;
-
-                            console.log( response);
-                            for (var i = 0; i < data.length; i++) {
-                                this.tweets.push(data[i]);
-                                this.lastTweetId = data[i]["id"];
-                                console.log(this.lastTweetId);
-                            }
-                        });
-                        this.lastCallTime = (new Date).getTime();
+                if((new Date).getTime() > (this.lastCallTime + 5000)){
+                axios.get("/api/tweetsbynumberfromstartpoint/5/" + this.lastTweetId +10)
+                .then((response) => {
+                      var data = response.data.data;
+                for (var i = 0; i < data.length; i++){
+                        this.tweets.push(data[i]);
+                        this.lastTweetId = data[i]["id"];
+                        console.log(this.lastTweetId);
                     }
-                }
-            };
-        }
-    },
 
-    mounted(){
-        this.initialTweets();
-        this.initialComments();
-        this.scroll();
-    }
-});
+                });
+
+                this.lastTimeChecked = (new Date).getTime();
+                }
+            }
+        };
+    },
+},
+        mounted(){
+         this.initialTweets();
+         this.scroll();
+     }
+})

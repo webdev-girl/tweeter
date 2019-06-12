@@ -4,9 +4,9 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TweetLike extends Model
+class Tweetlike extends Model
 {
-    public function user(){
-        return $this->belongsTo(User::class);
-      }
+    // public function user(){
+    //     return $this->belongsTo(User::class);
+    //   }
 }

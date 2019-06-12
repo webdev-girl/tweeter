@@ -15,12 +15,12 @@ class CreateFollowersTable extends Migration
     {
         Schema::create('followers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user_id');
-            $table->integer('tweet_id');
-            $table->integer('following_id');
+            $table->integer('user_id')->unsigned()->index();
+            $table->integer('tweet_id')->unsigned()->index();
+            $table->integer('following_id')->unsigned()->index();
             $table->integer('followers');
             $table->timestamps();
-            $table->timestamps();
+
         });
     }
 

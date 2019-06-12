@@ -13,7 +13,7 @@ class CreateTweetLikesTable extends Migration
      */
     public function up()
     {
-        Schema::create('tweet_likes', function (Blueprint $table) {
+        Schema::create('tweetlikes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('user_id')->unsigned()->index();
             $table->integer('tweet_id')->unsigned()->index();

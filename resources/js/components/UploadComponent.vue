@@ -1,10 +1,9 @@
-<template>
+<!-- <template>
     <div class="container">
         <input type="file" name="image" @change="GetImage" accept="image/*">
         <img :src="avatar" alt="Image">
         <a href="#" class="btn btn-success" @click.prevent="upload">Upload</a>
     </div>
-    <upload-component :user="{{auth()->user()}}"></upload-component>
 </template>
 
 <script>
@@ -34,4 +33,4 @@
             }
         }
     }
-</script>
+</script> -->
