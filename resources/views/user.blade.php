@@ -1,19 +1,36 @@
-@include('partials.header')
+@extends('layouts.app')
+    @section('content')
 
-@section('content')
-
-    <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
+    <div class="container">
+        {{-- {{ $user->name }} --}}
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {{-- <h3>{{ $user->name }}</h3> --}}
+            {{-- @if(auth()->user()->isNot($user))
+              @if(auth()->user()->isFollowing($user))
+                   <a href="{{ route('user.unfollow', $user) }}" class="btn btn-danger">No Follow</a>
+              @else
+                   <a href="{{ route('user.follow', $user) }}" class="btn btn-success">Follow</a>
+              @endif
+          @endif --}}
+            </div>
+        </div>
+    </div>
+    @endsection
+    {{-- <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
         <div class="container">
                {{-- <a class="navbar-brand" href="{{ url('/') }}">
                    {{ config('app.name', 'Laravel') }}
                </a> --}}
-               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+               {{-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                    <span class="navbar-toggler-icon"></span>
-               </button>
+               </button> --}}
 
-               <div class="collapse navbar-collapse" id="navbarSupportedContent">
+               {{-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> --}}
                    <!-- Left Side Of Navbar -->
-                   <ul class="navbar-nav mr-auto">
+                   {{-- <ul class="navbar-nav mr-auto">
                        <li><a class="login" class="navbar-brand" href="{{ url('/welcome') }}"><img src="../images/twitterbird.png" width="23px" height="23px">Home</a></li>
                        <li><a href="/moments">Moments</a></li>
                        <li><a href="/notifications">Notifications</a></li>
@@ -25,17 +42,17 @@
                            <button type="submit" class="btn">
                                 <i class="fa fa-search"></i>
                            </button>
-                       </div>
+                       </div> --}}
 
 
-                       <li><a href="/profile">Profile</a></li>
+                       {{-- <li><a href="/profile">Profile</a></li>
                        <li><a href="{{ url('/logout') }}"> logout </a></li>
-                   </ul>
+                   </ul> --}}
 
                    <!-- Right Side Of Navbar -->
-                   <ul class="navbar-nav ml-auto">
+                   {{-- <ul class="navbar-nav ml-auto"> --}}
                        <!-- Authentication Links -->
-                       @guest
+                       {{-- @guest
                            <li class="nav-item">
                                <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                            </li>
@@ -79,8 +96,8 @@
 
                                    <div class="profile-contact">
                                        <div>
-                                          {{-- <a href="/moments"><h6 class="profile-header-name">{{$tweet->user->name}}</h6></a> --}}
-                                        </div>
+                                          {{-- <a href="/moments"><h6 class="profile-header-name">{{$tweet->user->name}}</h6></a> --}} --}}
+                                        {{-- </div>
                                         <div>
                                            <a href="/moments">{{$tweet->user->email}}</a>
                                         </div>
@@ -89,7 +106,7 @@
                                                 <a href="/moments">Tweets</a>
                                             </div>
                                             {{-- {{$count}} --}}
-                                            <div class="col-sm">
+                                            {{-- <div class="col-sm">
                                                 <a href="/moments">Following</a>
                                           </div>
                                        </div>
@@ -269,7 +286,5 @@
                    </div>
                </div>
            </div>
-       </div>
+       </div> --}}
    {{-- @include('partials.footer') --}}
-
-@endsection

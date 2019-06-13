@@ -60,6 +60,7 @@
                                            <div>
                                                <a href="user.follow/{user->id}"class="btn btn-primary">{{ __('Follow') }}</a>
                                                <a href="user.unFollow/{user->id}"class="btn btn-primary">{{ __('Un Follow') }}</a>
+
                                            </div>
                                         </div>
                                     </div>

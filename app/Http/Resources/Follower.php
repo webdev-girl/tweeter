@@ -2,11 +2,9 @@
 
 namespace App\Http\Resources;
 
-
-
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Tweet extends JsonResource
+class Follower extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,5 +16,4 @@ class Tweet extends JsonResource
     {
         return parent::toArray($request);
     }
-
 }

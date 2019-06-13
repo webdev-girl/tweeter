@@ -27,7 +27,7 @@ Route::get('/edit-tweet', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
+// Route::get('tweets', 'TweetsController@index')->name('tweets.index');
 // Route::get('user/api',[
 // 	'as' => 'user.api',
 // 	'uses' => 'API\UserApiController@index'
@@ -43,25 +43,20 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 // Route::get('/api?page=1', 'PostsController@apiPaginate');
 Route::get('/users', 'HomeController@getUsers')->name('users');
-
 Route::get('/home', 'TweetsController@index')->name('home')->middleware('auth');
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout');
 Route::get('/logout', 'LogoutController@logout');
-
 Route::get('tweet', 'TweetsController@show');
 Route::post('/tweet', 'TweetsController@saveTweet')->name('save-tweet');
 Route::delete('/delete-tweet', 'TweetsController@deleteTweet')->name('delete-tweet');
 Route::post('/like-tweet', 'TweetsController@likeTweet');
-
 Route::get('/edit-tweet/{id}', 'TweetsController@editTweetDisplay');
 Route::post('/edit-tweet', 'TweetsController@editTweet');
-
 Route::post('/comment', 'TweetsController@saveComment')->name('savecomment');
 Route::get('/comment', 'TweetsController@index');
-// Route::delete('/delete/{id}', 'CommentsController@deleteComment')->name('delete-comment');
-
+Route::delete('/delete/{id}', 'CommentsController@deleteComment')->name('delete-comment');
 Route::get('/edit-comment/{id}', 'CommentsController@editCommentDisplay');
-Route::post('/edit-comment', 'CommentsController@editComment');
+// Route::post('/edit-comment', 'CommentsController@editComment');
 Route::post('tweets', 'UserController@upload');
 // Route::get('/dashboard', 'HomeController@index')->name('home');
   // require __DIR__ . '/profile/profile.php';
@@ -73,6 +68,11 @@ Route::post('tweets', 'UserController@upload');
 
 // Route::get('/redirect', 'SocialAuthFacebookController@redirect');
 // Route::get('/callback', 'SocialAuthFacebookController@callback');
+
+// Route::post('tweet/save', 'TweetsController@store');
+Route::get('users/{user}', 'UserController@show')->name('user.show');
+Route::get('users/{user}/follow', 'UserController@follow')->name('user.follow');
+Route::get('users/{user}/unfollow', 'UserController@unfollow')->name('user.unfollow');
 Route::get('locale/{locale}', function($locale){
     Session::put('locale',$locale);
     return redirect()->back();
@@ -93,7 +93,7 @@ Route::get('locale/{locale}', function($locale){
 // Route::get('/profile', 'UsersController@Profiledisplay');
 // Route::post('profile/{profileId}/user-follow', 'UsersController@followUser')->name('user-follow');
 // Route::post('/{profileId}/user-unfollow', 'UsersController@unFollowUser')->name('user-unfollow');
-  // Route::get('/home', 'HomeController@index')->name('home');
+
 
 
   //Route::get('user', 'UsersController@index');
@@ -109,13 +109,8 @@ Route::get('locale/{locale}', function($locale){
   // Route::post('edit-tweet', 'TweetController@editTweet');
 
   // Route::post('profile', 'TweetController@editprofile');
-  // Route::get('/home', 'TweetController@index');
-  // Route::post('tweets', 'TweetController@create_comment');
+
+
   // Route::get('home/{id}', 'TweetController@show');
-  // Route::post('delete', 'TweetController@destroy');
+
   // Route::post('follow', 'TweetController@follow');
-  // Route::post('/like-tweet', 'TweetController@likeTweet');
-  // Route::get('locale/{locale}', function($locale){
-  //     Session::put('locale',$locale);
-  //     return redirect()->back();
-  // });

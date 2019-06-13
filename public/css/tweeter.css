@@ -536,8 +536,14 @@ textarea {
   .likeUnlikeBtn {
     display: none; }
 
-  .displaying {
-    display: inline-block; }
+ .displaying {
+display: inline-block; }
+
+.likeUnFollowBtn {
+display: none; }
+
+.displaying {
+display: inline-block; }
 
 .btn-sm {
   padding-right: 5px;

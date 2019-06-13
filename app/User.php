@@ -33,10 +33,38 @@ class User extends Authenticatable
      protected $hidden = [
          'password', 'remember_token',
      ];
+    protected $appends = ['profileLink'];
+
      public function tweets(){
          return $this->hasMany('App\Tweet');
      }
      public function comments(){
          return $this->hasMany('App\Comments');
      }
+    public function getRouteKeyName(){
+       return 'name';
+    }
+    public function getProfileLinkAttribute(){
+        return route('user.show', $this);
+    }
+    public function following(){
+        return $this->belongsToMany(User::class, 'followers', 'user_id', 'follower_id');
+    }
+    public function isNot($user){
+        return $this->id !== $user->id;
+}
+    public function isFollowing($user){
+        return (bool) $this->following->where('id', $user->id)->count();
+}
+
+    public function canFollow($user){
+        if(!$this->isNot($user)) {
+            return false;
+        }
+        return !$this->isFollowing($user);
+    }
+    public function canUnFollow($user){
+        return $this->isFollowing($user);
+    }
+
 }

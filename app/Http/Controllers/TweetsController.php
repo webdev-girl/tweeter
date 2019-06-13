@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 use DB;
 use App\Tweet;
 use App\Tweetlike;
-use App\followers;
-use App\following;
+use App\Follower;
+use App\Following;
 use App\Comment;
 use App\User;
 use Auth;
@@ -14,6 +14,7 @@ use App\Http\Resources\User as UserResource;
 use App\Http\Resources\Tweet as TweetResource;
 use App\Http\Resources\TweetLike as TweetlikeResource;
 use App\Http\Resources\Comment as CommentResource;
+use App\Http\Resources\Follower as FollowerResource;
 
 class TweetsController extends Controller
 {
@@ -24,16 +25,24 @@ class TweetsController extends Controller
      */
     public function __construct()
     {
-        
+
     }
-    public function index(){
+    // public function index(){
+        public function index(Request $request, Tweet $tweet){
+        $tweets = $tweet->whereIn('user_id', $request->user()->following()
+                          ->pluck('users.id')
+                          ->push($request->user()->id))
+                          ->with('user')
+                          ->orderBy('created_at', 'desc')
+                          ->take($request->get('limit', 10))
+                          ->get();
 
         $user_id = Auth::user()->id;
         $user = new User;
         $users = $user;
         $editTweet = new Tweet;
         $tweetLike = new TweetLike;
-
+        $followers = new Follower;
         $potentialFollowers = $users = $user->get();
         // $follower = $follower->where("user_id",$user->id)->where("following", 1)->get(array('id'))->toArray();
 
@@ -182,6 +191,12 @@ public function deleteTweetViaApi(Request $request){
         Tweet::destroy($request->tweet_id);
     }
 }
+// public function deleteCommentViaApi(Request $request,$id){
+//     $user = Auth::user();
+//     Comment::where('id',$id)->delete();
+//
+//     }
+
 public function likeTweetViaApi(Request $request){
     $user = Auth::user();
     $user = new User();
@@ -220,6 +235,25 @@ public function getAllTweetLikesApi(Request $request){
                  return '("Liked!" : "1")';
              }
          }
+    // public function index(Request $request, Tweet $tweet) {
+    //      $tweet = $tweet->whereIn('user_id', $request->user()->following()
+    //                        ->pluck('users.id')
+    //                        ->push($request->user()->id))
+    //                        ->with('user')
+    //                        ->orderBy('created_at', 'desc')
+    //                        ->take($request->get('limit', 10))
+    //                        ->get();
+    //
+    //        return response()->json($tweets);
+    //    }
+
+     public function store(Request $request, Tweet $tweet){
+           $newTweet = $request->user()->tweets()->create([
+               'tweet' => $request->get('tweet')
+           ]);
+
+           return response()->json($tweet->with('user')->find($newTweet->id));
+       }
 public function followUserViaApi(){
     $user = Auth::user();
     $user = new User();
@@ -234,21 +268,22 @@ public function followUserViaApi(){
         return '{"success": "0"}';
     }
 }
-public function getTweetComments($tweetId){
-    $comments = Comment::where("tweet_id","=",$tweetId)->get();
-    return new CommentResource($comments);
-}
-public function newCommentViaApi(Request $request){
-    $comment = new Comment;
-    $comment ->user_id = $request->user_id;
-    $comment ->tweet_id = $request->tweet_id;
-    $comment ->comment = $request->comment;
-    if($request->comment){
-        $comment -> save();
-        return '{"success": "1"}';
+
+    public function getTweetComments($tweetId){
+        $comments = Comment::where("tweet_id","=",$tweetId)->get();
+        return new CommentResource($comments);
     }
-    else{
-        return '{"success": "0"}';
+    public function newCommentViaApi(Request $request){
+        $comment = new Comment;
+        $comment ->user_id = $request->user_id;
+        $comment ->tweet_id = $request->tweet_id;
+        $comment ->comment = $request->comment;
+        if($request->comment){
+            $comment -> save();
+            return '{"success": "1"}';
+        }
+        else{
+            return '{"success": "0"}';
+        }
     }
-}
-}
+    }

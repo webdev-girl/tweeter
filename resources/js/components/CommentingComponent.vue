@@ -26,6 +26,13 @@
             <div class="align-right">
                 <button @click="makeComment" class="btn btn-success">Comment</button>
             </div>
+            <input type="hidden" name="_method" value="DELETE"/>
+            <input type="hidden" name="id" value=""/>
+            <button @click="deleteComment" type="submit" class="btn btn-sm  btn-delete"  style="background-color: #1da1f2; color:white;">Delete</button>
+
+            <button :class="{'displaying': followActive}" class="btn btn-xs  likeUnFollowBtn" @click="follow(tweet.id)"  style="background-color: #1da1f2; color:white; font-size:10px;">Follow</button> &nbsp;&nbsp;
+            <button :class="{'displaying': unFollowActive}" class="btn btn-xs  likeUnFollowBtn" @click="unFollow(tweet.id)"  style="background-color: #1da1f2; color:white; font-size:10px;">Unfollow</button>
+
             <h2 class="title">Search</h2>
             <input type="hidden" name="giph_search" v-model="selectedGif">
             <input type="hidden" name="gif_comment" :value="(selectedGif ? 1 : 0)">
@@ -59,6 +66,8 @@
         },
         data(){
             return{
+                followActive: true,
+                unFollowActive: false,
                 newComment: "",
                 query: null,
                 apiKey: 'tZTbkZkpbZhyDnHqQR5zzMAPF9bnQ27x',
@@ -79,8 +88,54 @@
                 })
                 .catch(function(error) {
                 });
-            location.reload();    
+            location.reload();
             },
+            deleteComment(tweetId){
+                // alert('Are you sure you want to perform this action?');
+                // console.log(this.deleteTweet);
+                axios.post('/api/comment-delete',{
+                    tweet_id: tweetId,
+                    delete: '0',
+                    user_id: currentLoggedInUserUserId
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error){
+                    console.log(error);
+                });
+            location.reload();
+        },
+        follow(tweetId){
+            this.followActive = false;
+            this.unFollowActive = true;
+            axios.post('/api/follow-user',{
+                tweet_id: tweetId,
+                follow: "1",
+                user_id: currentLoggedInUserUserId
+            })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        },
+        unFollow(tweetId){
+            this.followActive = true;
+            this.unFollowActive = false;
+            axios.post('/api/follow-user',{
+                tweet_id: tweetId,
+                unfollow: "0",
+                user_id: currentLoggedInUserUserId
+            })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error){
+                console.log(error);
+            });
+        },
             fetchGifs: function() {
               const url = `${this.apiUrl}?q=${this.query}&api_key=${this.apiKey}&limit=8`;
               axios.get(url)
@@ -144,6 +199,4 @@
         },
         props: ['tweetId']
     }
-
-
 </script>

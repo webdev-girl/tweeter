@@ -1853,6 +1853,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('CommentComponent mounted.');
@@ -1929,12 +1930,21 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     console.log('CommentingComponent mounted.');
   },
   data: function data() {
     return {
+      followActive: true,
+      unFollowActive: false,
       newComment: "",
       query: null,
       apiKey: 'tZTbkZkpbZhyDnHqQR5zzMAPF9bnQ27x',
@@ -1952,6 +1962,46 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         comment: this.newComment
       }).then(function (response) {})["catch"](function (error) {});
       location.reload();
+    },
+    deleteComment: function deleteComment(tweetId) {
+      // alert('Are you sure you want to perform this action?');
+      // console.log(this.deleteTweet);
+      axios.post('/api/comment-delete', {
+        tweet_id: tweetId,
+        "delete": '0',
+        user_id: currentLoggedInUserUserId
+      }).then(function (response) {
+        console.log(response);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+      location.reload();
+    },
+    follow: function follow(tweetId) {
+      this.followActive = false;
+      this.unFollowActive = true;
+      axios.post('/api/follow-user', {
+        tweet_id: tweetId,
+        follow: "1",
+        user_id: currentLoggedInUserUserId
+      }).then(function (response) {
+        console.log(response);
+      })["catch"](function (error) {
+        console.log(error);
+      });
+    },
+    unFollow: function unFollow(tweetId) {
+      this.followActive = true;
+      this.unFollowActive = false;
+      axios.post('/api/follow-user', {
+        tweet_id: tweetId,
+        unfollow: "0",
+        user_id: currentLoggedInUserUserId
+      }).then(function (response) {
+        console.log(response);
+      })["catch"](function (error) {
+        console.log(error);
+      });
     },
     fetchGifs: function fetchGifs() {
       var _this = this;
@@ -2094,6 +2144,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -38121,32 +38173,32 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _vm._m(0),
-    _vm._v(" "),
-    _c(
-      "div",
-      {
-        staticClass: "comment-content",
-        staticStyle: {
-          "font-size": "20px",
-          color: "#3B3B54",
-          "font-weight": "bold",
-          "font-style": "italic"
-        }
-      },
-      [_vm._v("\n        " + _vm._s(_vm.comment.comment) + "\n    ")]
-    ),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(
-      "\n     " +
-        _vm._s(_vm.comment.user_id) +
-        " @ " +
-        _vm._s(_vm.comment.created_at) +
-        "\n\n"
-    )
-  ])
+  return _c(
+    "div",
+    [
+      _vm._m(0),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "comment-content",
+          staticStyle: {
+            "font-size": "20px",
+            color: "#3B3B54",
+            "font-weight": "bold",
+            "font-style": "italic"
+          }
+        },
+        [_vm._v("\n        " + _vm._s(_vm.comment.comment) + "\n    ")]
+      ),
+      _vm._v(" "),
+      _c("br"),
+      _vm._v("\n     by-" + _vm._s(_vm.comment.user_id) + " @\n "),
+      _vm._v(" | " + _vm._s(_vm.comment.createdDate) + "\n      "),
+      _c("commenting-component", { attrs: { comment: _vm.comment } })
+    ],
+    1
+  )
 }
 var staticRenderFns = [
   function() {
@@ -38212,6 +38264,61 @@ var render = function() {
         [_vm._v("Comment")]
       )
     ]),
+    _vm._v(" "),
+    _c("input", {
+      attrs: { type: "hidden", name: "_method", value: "DELETE" }
+    }),
+    _vm._v(" "),
+    _c("input", { attrs: { type: "hidden", name: "id", value: "" } }),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-sm  btn-delete",
+        staticStyle: { "background-color": "#1da1f2", color: "white" },
+        attrs: { type: "submit" },
+        on: { click: _vm.deleteComment }
+      },
+      [_vm._v("Delete")]
+    ),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-xs  likeUnFollowBtn",
+        class: { displaying: _vm.followActive },
+        staticStyle: {
+          "background-color": "#1da1f2",
+          color: "white",
+          "font-size": "10px"
+        },
+        on: {
+          click: function($event) {
+            return _vm.follow(_vm.tweet.id)
+          }
+        }
+      },
+      [_vm._v("Follow")]
+    ),
+    _vm._v("   \n        "),
+    _c(
+      "button",
+      {
+        staticClass: "btn btn-xs  likeUnFollowBtn",
+        class: { displaying: _vm.unFollowActive },
+        staticStyle: {
+          "background-color": "#1da1f2",
+          color: "white",
+          "font-size": "10px"
+        },
+        on: {
+          click: function($event) {
+            return _vm.unFollow(_vm.tweet.id)
+          }
+        }
+      },
+      [_vm._v("Unfollow")]
+    ),
     _vm._v(" "),
     _c("h2", { staticClass: "title" }, [_vm._v("Search")]),
     _vm._v(" "),
@@ -38458,10 +38565,11 @@ var render = function() {
       _vm._v(
         "\n\n    by - " +
           _vm._s(_vm.tweet.user_id) +
-          " @ " +
-          _vm._s(_vm.tweet.created_at) +
+          " @\n         " +
+          _vm._s(_vm.tweet.user) +
           "\n    "
       ),
+      _vm._v(" | " + _vm._s(_vm.tweet.createdDate) + "\n    "),
       _c("br"),
       _vm._v(" "),
       _c("input", {

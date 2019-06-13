@@ -7,8 +7,9 @@
             {{comment.comment}}
         </div>
         <br />
-         {{ comment.user_id }} @ {{ comment.created_at }}
-
+         by-{{ comment.user_id }} @
+     </a> | {{ comment.createdDate }}
+          <commenting-component :comment="comment"></commenting-component>
     </div>
 
 </template>

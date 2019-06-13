@@ -6,7 +6,9 @@
         </div>
         <br />
 
-        by - {{ tweet.user_id}} @ {{ tweet.created_at }}
+        by - {{ tweet.user_id}} @
+             {{ tweet.user }}
+        </a> | {{ tweet.createdDate }}
         <br/>
         <input type="hidden" name="tweet_id" value="currentLoggedInUserUserId"/>
         <button :class="{'displaying': likeActive}" class="btn btn-xs likeUnlikeBtn" @click="likeTweet(tweet.id)" style="background-color: white; color:white; font-size:20px;"><i class="fa fa-heart" style="color:#2DB2F4;"></i></button> &nbsp;&nbsp;
@@ -88,6 +90,7 @@ export default {
             });
         location.reload();
         }
+
     },
     props:['tweet']
 }

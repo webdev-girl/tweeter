@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {{-- <meta http-equiv="X-UA-Compatible" content="IE=edge"> --}}
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -37,7 +37,21 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                        <li><a class="login" class="navbar-brand" href="{{ url('/welcome') }}"><img src="../images/twitterbird.png" width="23px" height="23px">Home</a></li>
+                        <li><a href="/moments">Moments</a></li>
+                        <li><a href="/notifications">Notifications</a></li>
+                        <li><a href="/messages">Messages</a></li>
+                        <li><i class="fab fa-twitter"></i></li>
+                        <div class="input-append">
+                            <input class="span2" type="text">
+                            <button type="submit" class="btn">
+                                 <i class="fa fa-search"></i>
+                            </button>
+                        </div>
 
+
+                         <li><a href="/profile">Profile</a></li>
+                        <li><a href="{{ url('/logout') }}"> logout </a></li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->
