@@ -29,6 +29,6 @@ class CreateTweetlikesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tweet_likes');
+        Schema::dropIfExists('tweetlikes');
     }
 }
