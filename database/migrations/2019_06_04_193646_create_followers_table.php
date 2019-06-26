@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreateFollowersTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -15,15 +16,24 @@ class CreateFollowersTable extends Migration
     {
         Schema::create('followers', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user_id')->unsigned();
-            $table->integer('follower_id')->unsigned();
-            $table->integer('following')->unsigned();
-            $table->nullableTimestamps();
-            $table->foreign('follower_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->integer('user_id')->index();
+            $table->integer('follows_id')->index();
+            $table->timestamps();
+            // $table->foreign('follower_id')->references('id')->on('users')->onDelete('cascade');
+            // $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            // $table->nullableTimestamps();
+    });
+    //     Schema::create('followers', function (Blueprint $table) {
+    //     $table->increments('id');
+    //     $table->integer('user_id')->index();
+    //     $table->integer('follows_id')->index();
+    //     $table->boolean('following');
+    //     $table->timestamps();
+    // });
+}
 
-        });
-    }
+
+
 
     /**
      * Reverse the migrations.

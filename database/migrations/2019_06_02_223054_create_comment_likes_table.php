@@ -17,6 +17,7 @@ class CreateCommentLikesTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id')->unsigned()->index();
             $table->integer('tweet_id')->unsigned()->index();
+            $table->integer('commentlikes_id')->unsigned()->index();
             $table->integer('likes')->unsigned()->index();
             $table->timestamps();
         });

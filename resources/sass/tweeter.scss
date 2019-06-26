@@ -223,7 +223,6 @@ ul {
   overflow: hidden; }
   ul li {
     float: left;
-    margin-left: 3px;
     padding: 0; }
     ul li a {
       display: block;
@@ -507,22 +506,13 @@ div.header {
 
 .home-tweet-fonts{
 font-style: italic;
-
 }
-  // .is-visable{
-  //     display:inline-block!important;
-  // }
-  //
-  // .is-invisable{
-  //     display:none;
-  // }
-// .likeActive{
-//     display:inline-block;
-// }
-//
-// .unLikeActive{
-//     display: none;
-// }
+.followUnfollowBtn {
+    display: none;
+}
+.displayingfollow {
+    display: inline-block;
+}
 .likeUnlikeBtn {
     display: none;
 }

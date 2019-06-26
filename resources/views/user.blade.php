@@ -1,90 +1,42 @@
 @extends('layouts.app')
     @section('content')
+        {{-- <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    {{-- <div class="card-body">
+                    <p>{{ trans('sentence.welcome')}}</p>
+                    </div> --}}
+                {{-- </div>
+            </div>
+        </div>
+    </div>  --}}
 
-    <div class="container">
-        {{-- {{ $user->name }} --}}
-    </div>
+        <h1>{{ $user->name}}</h1>
+        {{-- <ul class="list-group list-group-flush">
+          <li class="list-group-item">{{ $user->profile->bio }}</li>
+          <li class="list-group-item">{{ $user->profile->location }}</li>
+          <li class="list-group-item">{{$user->profile->birthday}}</li>
+          <li class="list-group-item">{{$user->profile->website}}</li>
+        </ul> --}}
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                {{-- <h3>{{ $user->name }}</h3> --}}
-            {{-- @if(auth()->user()->isNot($user))
-              @if(auth()->user()->isFollowing($user))
-                   <a href="{{ route('user.unfollow', $user) }}" class="btn btn-danger">No Follow</a>
-              @else
-                   <a href="{{ route('user.follow', $user) }}" class="btn btn-success">Follow</a>
-              @endif
-          @endif --}}
+                <h3>{{ $user->name }}</h3>
+                @if(auth()->user()->isNot($user))
+                    @if(auth()->user()->isFollowing($user))
+                        <a href="{{ route('user.unfollow', $user) }}" class="btn btn-danger">No Follow</a>
+                    @else
+                        <a href="{{ route('user.follow', $user) }}" class="btn btn-success">Follow</a>
+                    @endif
+                @endif
             </div>
         </div>
     </div>
+
     @endsection
-    {{-- <nav class="navbar navbar-expand-md navbar-light navbar-laravel">
-        <div class="container">
-               {{-- <a class="navbar-brand" href="{{ url('/') }}">
-                   {{ config('app.name', 'Laravel') }}
-               </a> --}}
-               {{-- <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                   <span class="navbar-toggler-icon"></span>
-               </button> --}}
 
-               {{-- <div class="collapse navbar-collapse" id="navbarSupportedContent"> --}}
-                   <!-- Left Side Of Navbar -->
-                   {{-- <ul class="navbar-nav mr-auto">
-                       <li><a class="login" class="navbar-brand" href="{{ url('/welcome') }}"><img src="../images/twitterbird.png" width="23px" height="23px">Home</a></li>
-                       <li><a href="/moments">Moments</a></li>
-                       <li><a href="/notifications">Notifications</a></li>
-                       <li><a href="/messages">Messages</a></li>
-                       <li><i class="fab fa-twitter"></i></li>
-
-                       <div class="input-append">
-                           <input class="span2" type="text">
-                           <button type="submit" class="btn">
-                                <i class="fa fa-search"></i>
-                           </button>
-                       </div> --}}
-
-
-                       {{-- <li><a href="/profile">Profile</a></li>
-                       <li><a href="{{ url('/logout') }}"> logout </a></li>
-                   </ul> --}}
-
-                   <!-- Right Side Of Navbar -->
-                   {{-- <ul class="navbar-nav ml-auto"> --}}
-                       <!-- Authentication Links -->
-                       {{-- @guest
-                           <li class="nav-item">
-                               <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                           </li>
-                           @if (Route::has('register'))
-                               <li class="nav-item">
-                                   <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                               </li>
-                           @endif
-                       @else
-                           <li class="nav-item dropdown">
-                               <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                   {{ Auth::user()->name }} <span class="caret"></span>
-                               </a>
-
-                               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                      onclick="event.preventDefault();
-                                                    document.getElementById('logout-form').submit();">
-                                       {{ __('Logout') }}
-                                   </a>
-
-                                   <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                       @csrf
-                                   </form>
-                               </div>
-                           </li>
-                       @endguest
-                   </ul>
-               </div>
-           </div>
-       </nav>
-       <div class="container-fluid timeline-div">
+    <div class="container-fluid timeline-div">
            <div class="row">
                <div class="col-sm-4 left-profile">
                    <div class="container">
@@ -96,8 +48,8 @@
 
                                    <div class="profile-contact">
                                        <div>
-                                          {{-- <a href="/moments"><h6 class="profile-header-name">{{$tweet->user->name}}</h6></a> --}} --}}
-                                        {{-- </div>
+                                          <a href="/moments"><h6 class="profile-header-name">{{$tweet->user->name}}</h6></a> --}}
+                                         </div>
                                         <div>
                                            <a href="/moments">{{$tweet->user->email}}</a>
                                         </div>
@@ -105,8 +57,8 @@
                                             <div class="col-sm-4">
                                                 <a href="/moments">Tweets</a>
                                             </div>
-                                            {{-- {{$count}} --}}
-                                            {{-- <div class="col-sm">
+                                             {{$count}}
+                                            <div class="col-sm">
                                                 <a href="/moments">Following</a>
                                           </div>
                                        </div>
@@ -279,12 +231,12 @@
                               @endforeach
                               </div>
                            </div>
-                           <div>
+                           {{-- <div>
                                <a class="twitter-timeline" data-width="650" data-height="1200" href="https://twitter.com/TwitterDev/timelines/539487832448843776?ref_src=twsrc%5Etfw">National Park Tweets - Curated tweets by TwitterDev</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                           </div>
+                           </div> --}}
                        </div>
                    </div>
                </div>
            </div>
-       </div> --}}
-   {{-- @include('partials.footer') --}}
+       </div>
+ @endsection

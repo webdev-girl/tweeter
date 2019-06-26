@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use DB;
 use App\Tweet;
 use App\Tweetlike;
-use App\Follower;
+use App\Followers;
 use App\Following;
 use App\Comment;
 use App\User;
+use APP\UserDetail;
 use Auth;
 use Illuminate\Http\Request;
 use App\Http\Resources\User as UserResource;
@@ -15,7 +17,6 @@ use App\Http\Resources\Tweet as TweetResource;
 use App\Http\Resources\TweetLike as TweetlikeResource;
 use App\Http\Resources\Comment as CommentResource;
 use App\Http\Resources\Follower as FollowerResource;
-
 class TweetsController extends Controller
 {
     /**
@@ -23,31 +24,23 @@ class TweetsController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-
+    public function __construct(){
     }
-    // public function index(){
-        public function index(Request $request, Tweet $tweet){
-        $tweets = $tweet->whereIn('user_id', $request->user()->following()
-                          ->pluck('users.id')
-                          ->push($request->user()->id))
-                          ->with('user')
-                          ->orderBy('created_at', 'desc')
-                          ->take($request->get('limit', 10))
-                          ->get();
-
+    public function index(){
         $user_id = Auth::user()->id;
         $user = new User;
         $users = $user;
+        // $userDetail = new UserDetail;
         $editTweet = new Tweet;
         $tweetLike = new TweetLike;
-        $followers = new Follower;
+        $follower = new Followers;
         $potentialFollowers = $users = $user->get();
-        // $follower = $follower->where("user_id",$user->id)->where("following", 1)->get(array('id'))->toArray();
-
+        $followers = $follower->where("user_id",$user->id)->where("follows_id", 1)->get(array('id'))->toArray();
+        foreach ($users as $user) {
+            echo $user->name;
+        }
+        $count = new Tweet;
         // $count = count($tweets);
-        // $count = $tweets;
         $name = new User;
         $currentUserId = $user->id;
         $names = $name->where('id', '!=', $currentUserId)->get();
@@ -62,7 +55,6 @@ class TweetsController extends Controller
         $tweet = Tweet::orderBy('created_at','desc')->get();
         $tweetCollection = array();
         foreach ($tweets as $tweet) {
-
         $newTweet = $tweet;
         $newTweet['comments'] = $comments;
         $comment= Tweet::find($tweet->id)->comment;
@@ -81,194 +73,172 @@ class TweetsController extends Controller
         $tweetCollection[] = $newTweet;
     }
     $tweets = $tweetCollection;
-
-    return view('home',compact('tweets','user'));
+    return view('home',compact('names','tweets','user','users','potentialFollowers'));
 }
-public function saveTweet(Request $request){
-    $this->middleware('auth');
-    $user = Auth::user();
-    $tweet = new Tweet;
-    $tweet ->user_id = $user->id;
-    $tweet ->tweet = $request->tweet;
-    $tweet -> save();
-    return redirect('home');
-}
-public function saveComment(Request $request){
-    $this->middleware('auth');
-    $user = Auth::user();
-    $comment = new Comment;
-    $comment ->user_id = $user->id;
-    $comment ->tweet_id = $request->tweet_id;
-    $comment ->comment = $request->comment;
-    $comment-> save();
-    return redirect('home');
-}
-public function deleteTweet(Request $request){
-    $tweet = Tweet::find($request->tweet_id);
-    if($tweet){
-        Tweet::destroy($request->tweet_id);
+    public function saveTweet(Request $request){
+        $this->middleware('auth');
+        $user = Auth::user();
+        $tweet = new Tweet;
+        $tweet ->user_id = $user->id;
+        $tweet ->tweet = $request->tweet;
+        $tweet -> save();
+        return redirect('home');
     }
-    return  redirect('home');
-}
-public function delete($id){
-    $user = Auth::user();
-    Comment::where('id',$id)->delete();
-    return redirect('home');
-}
-public function editTweet(Request $request){
-    $tweet =Tweet::find($request->tweet_id);
-    $tweet ->tweet = $request->tweet;
-    $tweet -> save();
-    return redirect('home');
-}
-public function editTweetDisplay($id){
-    $tweet =Tweet::find($id);
-    return view('editTweet',compact('tweet'));
-}
-public function editComment(Request $request){
-    $user = Auth::user();
-    $comment = Comment::find($request->comment_id);
-    $comment ->comment = $request->comment;
-    $comment -> save();
-    return redirect('home');
-}
-public function editCommentDisplay($id){
-    $comment = Comment::find($id);
-    return view('editComment',compact('comment'));
-}
-public function likeTweet(Request $request){
-    $user = Auth::user();
-    $tweetLike = new Tweetlike;
-    $tweetLike ->user_id = $user->id;
-    $tweetLike ->tweet_id = $request->tweet_id;
-    $tweetLike ->like = $request->like;
-    $tweetLike -> save();
-    return redirect('home');
-}
-public function editProfile(Request $request){
-    $currentUser = Auth:: User();
-    $user = new User();
-    $currentUserId = $currentUser->id;
-    $user = $user->find($currentUserId);
-    $user->name = $request->name;
-    $user->last_name = $request->last_name;
-    $user->email = $request->email;
-    $user->telephone = $request->telephone;
-    $user->gender = $request->gender;
-    $user -> save();
-    return redirect('home');
-}
-public function editProfileDisplay(){
-    $currentUser = Auth:: User();
-    $currentUserId = $currentUser->id;
-    $user = new User();
-    $user = $user->find($currentUserId);
-    return view('editUserProfile',compact('user'));
-}
-public function getAllTweets(){
-    $tweets =  Tweet::get();
-    return new TweetResource($tweets);
-}
-public function getAllComments(){
-    $comments = Comment::get();
-    return new CommentResource($comments);
-}
-// public function getAllTweetLikes(){
-//     $tweetLikes =  Tweetlike::get();
-//     return new TweetlikeResource($tweetLikes);
-//     }
-public function getAllTweetsByNumber($number){
-    $tweets = Tweet::limit($number)->orderBy('id','DESC')->get();
-    return new TweetResource($tweets);
-}
-public function getAllTweetsByNumberFromStartPoint($number,$id){
-    $tweets = Tweet::limit($number)->where("id", "<", $id)->orderBy('id','DESC')->get();
-    return new TweetResource($tweets);
-}
-public function deleteTweetViaApi(Request $request){
-    $tweet = Tweet::find($request->tweet_id);
-    if($tweet){
-        Tweet::destroy($request->tweet_id);
+    public function saveComment(Request $request){
+        $this->middleware('auth');
+        $user = Auth::user();
+        $comment = new Comment;
+        $comment ->user_id = $user->id;
+        $comment ->tweet_id = $request->tweet_id;
+        $comment ->comment = $request->comment;
+        $comment-> save();
+        return redirect('home');
     }
-}
-// public function deleteCommentViaApi(Request $request,$id){
-//     $user = Auth::user();
-//     Comment::where('id',$id)->delete();
-//
-//     }
-
-public function likeTweetViaApi(Request $request){
-    $user = Auth::user();
-    $user = new User();
-    $tweetLike = new Tweetlike;
-    $tweetLike ->user_id = $request->user_id;
-    $tweetLike ->tweet_id = $request->tweet_id;
-    $tweetLike ->like = $request->like;
-    if ($tweetLike -> save()){
-        return '{"success": "1"}';
-    }
-    else{
-        return '{"success": "0"}';
-    }
-}
-public function getAllTweetLikesApi(Request $request){
-    // $id = Auth::user();
-    $tweetLike = new Tweetlike;
-    $previousTweetLike = Tweetlike::limit(1)->where("user_id", "=", $request->user_id)->where("tweet", "=", "1")->get();
-       if(count($previousTweetLike) == 0){
-           $tweetLike->user_id = $request->user_id;
-           $tweetLike->tweet_id = $request->tweet_id;
-           $tweetLike->like = $request->like;
-        if( $tweetLike-> save()){
-                 return'{"success" : "1"}';
-            }
-            else{
-                return'{"success" : "0"}';
-            }
+    public function deleteTweet(Request $request){
+        $tweet = Tweet::find($request->tweet_id);
+        if($tweet){
+            Tweet::destroy($request->tweet_id);
         }
+        return  redirect('home');
+    }
+    public function delete($id){
+        $user = Auth::user();
+        Comment::where('id',$id)->delete();
+        return redirect('home');
+    }
+    public function editTweet(Request $request){
+        $tweet =Tweet::find($request->tweet_id);
+        $tweet ->tweet = $request->tweet;
+        $tweet -> save();
+        return redirect('home');
+    }
+    public function editTweetDisplay($id){
+        $tweet =Tweet::find($id);
+        return view('editTweet',compact('tweet'));
+    }
+    public function editComment(Request $request){
+        $user = Auth::user();
+        $comment = Comment::find($request->comment_id);
+        $comment ->comment = $request->comment;
+        $comment -> save();
+        return redirect('home');
+    }
+    public function editCommentDisplay($id){
+        $comment = Comment::find($id);
+        return view('editComment',compact('comment'));
+    }
+    public function likeTweet(Request $request){
+        $user = Auth::user();
+        $tweetLike = new Tweetlike;
+        $tweetLike ->user_id = $user->id;
+        $tweetLike ->tweet_id = $request->tweet_id;
+        $tweetLike ->like = $request->like;
+        $tweetLike -> save();
+        return redirect('home');
+    }
+    public function editProfile(Request $request){
+        $currentUser = Auth:: User();
+        $user = new User();
+        $currentUserId = $currentUser->id;
+        $user = $user->find($currentUserId);
+        $user->name = $request->name;
+        $user->last_name = $request->last_name;
+        $user->email = $request->email;
+        $user->telephone = $request->telephone;
+        $user->gender = $request->gender;
+        $user -> save();
+        return redirect('home');
+    }
+    public function editProfileDisplay(){
+        $currentUser = Auth:: User();
+        $currentUserId = $currentUser->id;
+        $user = new User();
+        $user = $user->find($currentUserId);
+        return view('editUserProfile',compact('user'));
+    }
+    public function getAllTweets(){
+        $tweets =  Tweet::get();
+        return new TweetResource($tweets);
+    }
+    public function getAllComments(){
+        $comments = Comment::get();
+        return new CommentResource($comments);
+    }
+    public function getAllTweetLikes(){
+        $tweetLikes = Tweetlike::get();
+        return new TweetlikeResource($tweetLikes);
+        }
+    public function getAllTweetsByNumber($number){
+        $tweets = Tweet::limit($number)->orderBy('id','DESC')->get();
+        return new TweetResource($tweets);
+    }
+    public function getAllTweetsByNumberFromStartPoint($number,$id){
+        $tweets = Tweet::limit($number)->where("id", "<", $id)->orderBy('id','DESC')->get();
+        return new TweetResource($tweets);
+    }
+    public function deleteTweetViaApi(Request $request){
+        $tweet = Tweet::find($request->tweet_id);
+        if($tweet){
+            Tweet::destroy($request->tweet_id);
+        }
+    }
+    public function deleteCommentViaApi(Request $request,$id){
+        $user = Auth::user();
+        Comment::where('id',$id)->delete();
 
-            else{
-                $tweetLikeId = $previousTweetLike[0]["id"];
-                $previousTweetLike = Tweetlike::find($tweetLikeId);
-                $previousTweetLike->like = $request->like;
-                $previousTweetLike->save();
-                 return '("Liked!" : "1")';
+        }
+    public function likeTweetViaApi(Request $request){
+        $user = Auth::user();
+        $user = new User();
+        $tweetLike = new Tweetlike;
+        $tweetLike ->user_id = $request->user_id;
+        $tweetLike ->tweet_id = $request->tweet_id;
+        $tweetLike ->like = $request->like;
+        if ($tweetLike -> save()){
+            return '{"success": "1"}';
+        }
+        else{
+            return '{"success": "0"}';
+        }
+    }
+    public function getAllTweetLikesApi(Request $request){
+        $id = Auth::user();
+        $tweetLike = new Tweetlike;
+        $previousTweetLike = Tweetlike::limit(1)->where("user_id", "=", $request->user_id)->where("tweet", "=", "1")->get();
+           if(count($previousTweetLike) == 0){
+               $tweetLike->user_id = $request->user_id;
+               $tweetLike->tweet_id = $request->tweet_id;
+               $tweetLike->like = $request->like;
+            if( $tweetLike-> save()){
+                     return'{"success" : "1"}';
+                }
+                else{
+                    return'{"success" : "0"}';
+                }
+            }
+                else{
+                    $tweetLikeId = $previousTweetLike[0]["id"];
+                    $previousTweetLike = Tweetlike::find($tweetLikeId);
+                    $previousTweetLike->like = $request->like;
+                    $previousTweetLike->save();
+                     return '("Liked!" : "1")';
+                 }
              }
-         }
-    // public function index(Request $request, Tweet $tweet) {
-    //      $tweet = $tweet->whereIn('user_id', $request->user()->following()
-    //                        ->pluck('users.id')
-    //                        ->push($request->user()->id))
-    //                        ->with('user')
-    //                        ->orderBy('created_at', 'desc')
-    //                        ->take($request->get('limit', 10))
-    //                        ->get();
-    //
-    //        return response()->json($tweets);
-    //    }
 
-     public function store(Request $request, Tweet $tweet){
-           $newTweet = $request->user()->tweets()->create([
-               'tweet' => $request->get('tweet')
-           ]);
-
-           return response()->json($tweet->with('user')->find($newTweet->id));
-       }
-public function followUserViaApi(){
-    $user = Auth::user();
-    $user = new User();
-    $follower= new FollowerResource;
-    $follower ->user_id = $request->user_id;
-    $follower ->follower_id = $request->follower_id;
-    $follower ->following = $request->following;
-    if ($follower -> save()){
-        return '{"success": "1"}';
+    public function followUserViaApi(){
+        $user = Auth::user();
+        $user = new User();
+        $follower= new FollowerResource;
+        $follower ->user_id = $request->user_id;
+        $follower ->follows_id = $request->follows_id;
+        $follower ->following = $request->following;
+        if ($follower -> save()){
+            return '{"success": "1"}';
+        }
+        else{
+            return '{"success": "0"}';
+        }
     }
-    else{
-        return '{"success": "0"}';
-    }
-}
-
     public function getTweetComments($tweetId){
         $comments = Comment::where("tweet_id","=",$tweetId)->get();
         return new CommentResource($comments);
@@ -286,4 +256,4 @@ public function followUserViaApi(){
             return '{"success": "0"}';
         }
     }
-    }
+}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               

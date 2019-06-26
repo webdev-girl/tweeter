@@ -16,7 +16,25 @@ class Comment extends Model
     public function user(){
       return $this->belongsTo('App\User');
   }
+  public function post(){
+      return $this->belongsTo('App\Post');
+  }
+
   public function getCreatedDateAttribute() {
       return $this->created_at->diffForHumans();
   }
+
+public function tweetlikes()
+{
+    return $this->morphMany('App\Tweetlike', 'Likeable');
+}
+public function like()
+{
+    return $this->morphToMany('App\User', 'likeable')->whereDeletedAt(null);
+}
+public function getIsLikedAttribute()
+{
+    $like = $this->likes()->whereUserId(Auth::id())->first();
+    return (!is_null($like)) ? true : false;
+}
 }

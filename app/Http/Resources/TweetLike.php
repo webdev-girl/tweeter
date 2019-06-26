@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TweetLike extends JsonResource
+class Tweetlike extends JsonResource
 
 {
     /**

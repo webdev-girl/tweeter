@@ -13,9 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::get('/user', function (Request $request) {
     return $request->user();
-});
+})->middleware('auth:api');
 
 Route::get('/users', "TweetsController@getAllUsers");
 Route::get('/tweet', 'TweetsController@getAllTweets');
@@ -23,9 +27,10 @@ Route::get('/comment', 'TweetsController@getAllComments');
 Route::get('/tweet-comments/{tweetId}', 'TweetsController@getTweetComments');
 Route::post('/new-comment', 'TweetsController@newCommentViaApi');
 Route::get('/new-comment', 'TweetsController@newCommentViaApi');
-Route::post('/tweet-like', 'TweetsController@likeTweetViaApi');
+Route::post('/tweet-like/{tweetId}', 'TweetsController@likeTweetViaApi');
+Route::post('/tweet-like/{tweetId}', 'TweetsController@getAllTweetLikesApi');
 Route::post('/tweet-delete', 'TweetsController@deleteTweetViaApi');
 Route::post('/comment-delete', 'TweetsController@deleteCommentViaApi');
-Route::post('/follow-user', 'TweetsController@followUserViaApi');
+Route::get('/users-follow', 'TweetsController@followUserViaApi');
 Route::get('/tweetsbynumber/{number}', 'TweetsController@getAllTweetsByNumber');
 Route::get('/tweetsbynumberfromstartpoint/{number}/{id}', 'TweetsController@getAllTweetsByNumberFromStartPoint');

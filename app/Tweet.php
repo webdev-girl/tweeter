@@ -6,8 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tweet extends Model
 {
+
+    protected $fillable = ['user_id','name','message'];
     protected $appends = ['createdDate'];
-    protected $fillable = ['name','message'];
+
     public function user(){
         return $this->belongsTo('App\User');
     }
@@ -17,4 +19,5 @@ class Tweet extends Model
     public function getCreatedDateAttribute() {
         return $this->created_at->diffForHumans();
     }
+
 }

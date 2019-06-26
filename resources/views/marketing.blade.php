@@ -22,7 +22,7 @@
                 <li><a href="/contact">Contact</a></li>
                 <li><a href="/">Blog</a></li>
                 <li><a href="/terms">Terms</a></li>
-                <li><a href="/welcome">Sign up</a></li>
+                <li><a href="/register">Sign up</a></li>
                 <div id="myNav" class="overlay">
             </ul>
             <ul>
